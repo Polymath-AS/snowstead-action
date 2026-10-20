@@ -1,0 +1,50 @@
+name: Snowstead
+description: Substitute from a Snowstead cache, and push what the job builds to it.
+author: Polymath AS
+branding:
+  icon: cloud-snow
+  color: blue
+
+inputs:
+  name:
+    description: Name of the cache.
+    required: true
+  authToken:
+    description: >
+      A token for the cache. With push permission the job's new store paths
+      are pushed after it ends; with pull permission a private cache can be
+      substituted from. Without one the cache is only substituted from.
+    required: false
+  server:
+    description: The Snowstead server.
+    default: https://cache.snowstead.com
+  publicKey:
+    description: The key the server signs narinfo with.
+    default: snowstead-1:rkNwHb7beRlJEi9NdvFhRziy0DFB3UDm6ZUurbpIg2U=
+  private:
+    description: Whether the cache is private. Reading it then needs the token's pull permission.
+    default: "false"
+  skipPush:
+    description: Substitute only; push nothing.
+    default: "false"
+  pathsToPush:
+    description: >
+      Whitespace-separated store paths or installables whose closures to push,
+      instead of every store path the job created.
+    required: false
+  pushFilter:
+    description: A regular expression; store paths matching it are not pushed.
+    required: false
+  jobs:
+    description: Store paths in flight at once while pushing.
+    default: "32"
+  cli:
+    description: The flake reference of the Snowstead CLI.
+    default: github:Polymath-AS/snowstead
+
+runs:
+  using: node24
+  main: dist/main.js
+  post: dist/post.js
+  # A failed job's finished paths still save the next run building them.
+  post-if: always()
