@@ -23,6 +23,9 @@ jobs:
           git diff --exit-code dist
 
   action:
+    # Needs a test cache: the variable SNOWSTEAD_TEST_CACHE and the secret
+    # SNOWSTEAD_AUTH_TOKEN, a push token for it.
+    if: vars.SNOWSTEAD_TEST_CACHE != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
