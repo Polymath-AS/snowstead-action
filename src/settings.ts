@@ -34,7 +34,7 @@ export function netrc(server: string, token: string): string {
 export function newStorePaths(before: ReadonlySet<string>, after: readonly string[], exclude?: RegExp): string[] {
 	return after
 		.filter((p) => !before.has(p) && !p.endsWith(".drv") && !exclude?.test(p))
-		.sort();
+		.toSorted();
 }
 
 /**

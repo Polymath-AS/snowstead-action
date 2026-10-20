@@ -20461,7 +20461,7 @@ function lines(text) {
 
 // src/settings.ts
 function newStorePaths(before, after, exclude) {
-  return after.filter((p) => !before.has(p) && !p.endsWith(".drv") && !exclude?.test(p)).sort();
+  return after.filter((p) => !before.has(p) && !p.endsWith(".drv") && !exclude?.test(p)).toSorted();
 }
 function batches(paths, maxBytes = 512 * 1024) {
   const out = [];

@@ -1,0 +1,33 @@
+name: release
+
+# Pushing a v* tag publishes it as a release, once the tagged commit's
+# dist/ matches its source and its checks pass: workflows run dist/ as it
+# is committed.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm check
+      - name: dist matches the source
+        run: |
+          pnpm build
+          git diff --exit-code dist
+      - name: publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes

@@ -40,6 +40,8 @@ async function post(): Promise<void> {
 
 	await core.group(`Pushing ${paths.length} store paths to ${inputs.name}`, async () => {
 		for (const batch of batches(paths)) {
+			// One batch at a time: each push already has `jobs` paths in flight.
+			// oxlint-disable-next-line no-await-in-loop
 			await exec(snowstead, ["push", inputs.name, "--jobs", String(inputs.jobs), ...batch], { env });
 		}
 	});
