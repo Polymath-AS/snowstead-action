@@ -7,7 +7,7 @@ what the job builds to it.
 steps:
   - uses: actions/checkout@v5
   - uses: DeterminateSystems/nix-installer-action@main
-  - uses: Polymath-AS/snowstead-action@v1
+  - uses: Polymath-AS/snowstead-action@v0.1.0
     with:
       name: mycache
       authToken: "${{ secrets.SNOWSTEAD_AUTH_TOKEN }}"
